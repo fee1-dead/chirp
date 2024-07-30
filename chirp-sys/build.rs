@@ -1,5 +1,7 @@
 fn main() {
     println!("cargo:rerun-if-changed=taichi");
+    println!("cargo:rerun-if-changed=src/main.rs");
+
     let dst = cmake::Config::new("taichi")
         .define("CMAKE_CXX_COMPILER", "clang++")
         .define("TI_WITH_PYTHON", "off")
@@ -16,8 +18,8 @@ fn main() {
     println!("cargo:rustc-link-lib=static=ti_device_api");
 
     let include = dst.join("include");
-    cxx_build::bridge("src/lib.rs")
+    let mut cc = autocxx_build::Builder::new("src/lib.rs", [&include]).build().unwrap();
+    cc.define("TI_INCLUDED", "true")
         .include(include)
-        .define("TI_INCLUDED", "true")
         .compile("chirpy");
 }
