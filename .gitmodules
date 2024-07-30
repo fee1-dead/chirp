@@ -1,0 +1,4 @@
+[submodule "chirp-sys/taichi"]
+	path = chirp-sys/taichi
+	url = https://github.com/fee1-dead/taichi.git
+	branch = chirp

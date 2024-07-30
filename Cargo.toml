@@ -1,0 +1,11 @@
+[workspace]
+members = [
+    "chirp-sys"
+]
+[package]
+name = "chirp"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chirp-sys = { path = "chirp-sys" }
