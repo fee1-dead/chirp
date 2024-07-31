@@ -9,3 +9,9 @@ edition = "2021"
 
 [dependencies]
 chirp-sys = { path = "chirp-sys" }
+autocxx = "0.27.0"
+cxx = "1.0.124"
+
+[build-dependencies]
+cmake = "0.1.50"
+autocxx-build = "0.27.0"

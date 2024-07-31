@@ -1,4 +1,16 @@
+use autocxx::prelude::*;
 
+pub mod ir_builder {
+    autocxx::include_cpp! {
+        #include "taichi/ir/ir_builder.h"
+        // #include "taichi/ir/type.h"
+        // #include "taichi/ir/ir.h"
+        name!(ffi)
+        safety!(unsafe_ffi)
+        generate!("taichi::lang::IRBuilder")
+    }
+    pub use ffi::*;
+}
 
 #[cxx::bridge(namespace = "taichi::lang")]
 pub mod bridge {
