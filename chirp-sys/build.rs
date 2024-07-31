@@ -9,7 +9,6 @@ fn main() {
         .define("USE_LLD", "off")
         .define("USE_MOLD", "on")
         .build();
-    
 
     println!("cargo:rustc-link-search=native={}", dst.display());
     println!("cargo:rustc-link-lib=static=taichi_core");
@@ -18,8 +17,11 @@ fn main() {
     println!("cargo:rustc-link-lib=static=ti_device_api");
 
     let include = dst.join("include");
-    let mut cc = autocxx_build::Builder::new("src/lib.rs", [&include]).build().unwrap();
+    let mut cc = autocxx_build::Builder::new("src/lib.rs", [&include])
+        .extra_clang_args(&["-std=c++17", "-DTI_INCLUDED=true"])
+        .build()
+        .unwrap();
     cc.define("TI_INCLUDED", "true")
-        .include(include)
+        .flag_if_supported("-std=c++17")
         .compile("chirpy");
 }
