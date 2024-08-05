@@ -17,6 +17,7 @@ fn main() {
     println!("cargo:rustc-link-lib=static=ti_device_api");
 
     let include = dst.join("include");
+
     let mut cc = autocxx_build::Builder::new("src/lib.rs", [&include])
         .extra_clang_args(&["-std=c++17", "-DTI_INCLUDED=true"])
         .build()
