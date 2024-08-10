@@ -1,3 +1,4 @@
+use std::env;
 use std::ptr::null_mut;
 
 // temp for testing
@@ -5,6 +6,9 @@ use autocxx::prelude::*;
 use chirp_sys::taichi::lang::{IRNode, Kernel, SNode, SNodeType};
 
 fn main() {
+    unsafe {
+        env::set_var("TI_LIB_DIR", chirp_sys::TAICHI_LIBDIR)
+    }
     let arch = chirp_sys::taichi::Arch::x64;
     let mut prog = chirp_sys::taichi::lang::Program::new1(arch.clone()).within_box();
 
@@ -40,9 +44,4 @@ fn main() {
     cxx::let_cxx_string!(out_dir = ".");
     cxx::let_cxx_string!(filename = "");
     aot_builder.dump(&out_dir, &filename);
-    // let mut sum = builder.as_mut().create_local_var();
-    // let mut sum_ptr = &sum;
-    // unsafe {
-    //     builder.as_mut().create_local_store(*sum_ptr, builder.as_mut().get_float32(0.2));
-    // }
 }

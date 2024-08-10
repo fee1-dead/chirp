@@ -1,3 +1,5 @@
+pub const TAICHI_LIBDIR: &'static str = env!("CHIRP_TAICHI_LIB_DIR");
+
 autocxx::include_cpp! {
     #include "taichi/aot/module_builder.h"
     #include "taichi/ir/ir.h"

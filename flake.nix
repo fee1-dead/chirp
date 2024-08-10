@@ -9,7 +9,7 @@
       pkgs = import nixpkgs { inherit system; };
     in
     {
-      devShells.default = with pkgs; (pkgs.mkShell.override { stdenv = clang18Stdenv; }) {
+      devShells.default = with pkgs; (pkgs.mkShell.override { stdenv = clang15Stdenv; }) rec {
         buildInputs = 
           with python311Packages; [
             pkg-config
@@ -24,9 +24,13 @@
             xorg.libXi
             xorg.libpthreadstubs
             libGL
+            libxml2.dev # for statically linking LLVM
+            ncurses
             mold
+            stdenv.cc.cc.lib
           ];
         LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
+        LD_LIBRARY_PATH = "${lib.makeLibraryPath buildInputs}";
         shellHook = ''
             export BINDGEN_EXTRA_CLANG_ARGS="$(< ${stdenv.cc}/nix-support/libc-crt1-cflags) \
             $(< ${stdenv.cc}/nix-support/libc-cflags) \
