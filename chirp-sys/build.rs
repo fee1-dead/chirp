@@ -11,9 +11,6 @@ fn main() {
         .build();
 
     println!("cargo:rustc-link-search=native={}", dst.display());
-    println!("cargo:rustc-link-lib=static=common_rhi");
-    println!("cargo:rustc-link-lib=static=llvm_rhi");
-    println!("cargo:rustc-link-lib=static=llvm_program_impl");
     println!("cargo:rustc-link-lib=static=taichi_core");
     println!("cargo:rustc-link-lib=static=taichi_common");
     println!("cargo:rustc-link-lib=static=taichi_util");
@@ -21,10 +18,36 @@ fn main() {
     println!("cargo:rustc-link-lib=static=opengl_rhi");
     println!("cargo:rustc-link-lib=static=opengl_program_impl");
     println!("cargo:rustc-link-lib=static=cuda_rhi");
-    //println!("cargo:rustc-link-lib=static=opengl_rhi");
-    //println!("cargo:rustc-link-lib=static=opengl_rhi");
-    // println!("cargo:rustc-link-lib=static=llvm");
 
+
+    // println!("cargo:rustc-link-lib=static=vulkan_rhi");
+    // println!("cargo:rustc-link-lib=static=amdgpu_rhi");
+    println!("cargo:rustc-link-lib=static=cpu_codegen");
+    // println!("cargo:rustc-link-lib=static=interop_rhi");
+    println!("cargo:rustc-link-lib=static=cpu_runtime");
+    println!("cargo:rustc-link-lib=static=gfx_runtime");
+    // println!("cargo:rustc-link-lib=static=cuda_codegen");
+    // println!("cargo:rustc-link-lib=static=dx12_runtime");
+    // println!("cargo:rustc-link-lib=static=dx12_codegen");
+    println!("cargo:rustc-link-lib=static=llvm_codegen");
+    println!("cargo:rustc-link-lib=static=llvm_runtime");
+    println!("cargo:rustc-link-lib=static=cpu_rhi");
+    println!("cargo:rustc-link-lib=static=spirv_codegen");
+
+    // println!("cargo:rustc-link-lib=static=amdgpu_codegen");
+    println!("cargo:rustc-link-lib=static=gfx_program_impl");
+    // println!("cargo:rustc-link-lib=static=dx_program_impl");
+    // println!("cargo:rustc-link-lib=static=dx12_program_impl");
+
+    // println!("cargo:rustc-link-lib=static=vulkan_program_impl");
+    // println!("cargo:rustc-link-lib=static=metal_rhi");
+    // println!("cargo:rustc-link-lib=static=metal_program_impl");
+    println!("cargo:rustc-link-lib=static=compilation_manager");
+    // println!("cargo:rustc-link-lib=static=dx_rhi");
+    
+    // println!("cargo:rustc-link-lib=static=dx12_rhi");
+    // println!("cargo:rustc-link-lib=static=llvm");
+    //glfw
     let include = dst.join("include");
 
     let mut cc = autocxx_build::Builder::new("src/lib.rs", [&include])
