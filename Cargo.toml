@@ -1,7 +1,7 @@
 [workspace]
 members = [
     "chirp-sys"
-]
+, "chirp-wrapper"]
 [package]
 name = "chirp"
 version = "0.1.0"
@@ -13,5 +13,4 @@ autocxx = "0.27.0"
 cxx = "1.0.124"
 
 [build-dependencies]
-cmake = "0.1.50"
 autocxx-build = "0.27.0"

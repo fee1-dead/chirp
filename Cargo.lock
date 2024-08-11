@@ -178,7 +178,6 @@ dependencies = [
  "autocxx",
  "autocxx-build",
  "chirp-sys",
- "cmake",
  "cxx",
 ]
 
@@ -189,6 +188,15 @@ dependencies = [
  "autocxx",
  "autocxx-build",
  "cmake",
+ "cxx",
+]
+
+[[package]]
+name = "chirp-wrapper"
+version = "0.1.0"
+dependencies = [
+ "autocxx",
+ "chirp-sys",
  "cxx",
 ]
 
