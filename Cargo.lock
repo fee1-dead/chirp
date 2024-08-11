@@ -183,6 +183,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "chirp-rt"
+version = "0.1.0"
+dependencies = [
+ "chirp-rt-macros",
+]
+
+[[package]]
+name = "chirp-rt-macros"
+version = "0.1.0"
+dependencies = [
+ "syn 2.0.72",
+]
+
+[[package]]
 name = "chirp-sys"
 version = "0.1.0"
 dependencies = [
@@ -191,6 +205,10 @@ dependencies = [
  "cmake",
  "cxx",
 ]
+
+[[package]]
+name = "chirpc"
+version = "0.1.0"
 
 [[package]]
 name = "clang-sys"

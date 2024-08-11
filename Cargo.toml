@@ -1,6 +1,9 @@
 [workspace]
 members = [
-    "chirp-sys"
+    "chirp-rt",
+    "chirp-rt/macros",
+    "chirp-sys",
+    "chirpc"
 ]
 [package]
 name = "chirp"

@@ -9,7 +9,7 @@ fn main() {
     unsafe {
         env::set_var("TI_LIB_DIR", chirp_sys::TAICHI_LIBDIR)
     }
-    let arch = chirp_sys::taichi::Arch::x64;
+    let arch = chirp_sys::taichi::Arch::opengl;
     let mut prog = chirp_sys::taichi::lang::Program::new1(arch.clone()).within_box();
 
     let snode = unsafe {
