@@ -7,8 +7,8 @@ fn llvm_config(cfg: impl FnOnce(&mut Command) -> &mut Command) -> String {
 }
 
 fn main() {
-    println!("cargo:rerun-if-changed=taichi");
-    println!("cargo:rerun-if-changed=src/main.rs");
+    // println!("cargo:rerun-if-changed=taichi");
+    // println!("cargo:rerun-if-changed=src/lib.rs");
 
     let dst = cmake::Config::new("taichi")
         .define("CMAKE_CXX_COMPILER", "clang++")
@@ -82,10 +82,11 @@ fn main() {
     let include = dst.join("include");
 
     let mut cc = autocxx_build::Builder::new("src/lib.rs", [&include])
-        .extra_clang_args(&["-std=c++17", "-DTI_INCLUDED=true"])
+        .extra_clang_args(&["-std=c++17", "-DTI_INCLUDED=true", "-w"])
         .build()
         .unwrap();
     cc.define("TI_INCLUDED", "true")
+        .flag("-w")
         .flag_if_supported("-std=c++17")
         .compile("chirpy");
 }
