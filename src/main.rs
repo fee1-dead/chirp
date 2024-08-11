@@ -3,7 +3,7 @@ use std::ptr::null_mut;
 
 // temp for testing
 use autocxx::prelude::*;
-use chirp_sys::taichi::lang::{IRNode, Kernel, SNode, SNodeType};
+use chirp_sys::taichi::lang::{Callable, IRNode, Kernel, SNode, SNodeType};
 
 fn main() {
     unsafe {
@@ -37,9 +37,16 @@ fn main() {
     };
     let ir2 = Box::pin(ir);
     let kernel = Kernel::new2(prog.as_mut(), ir2, &ident, chirp_sys::AutodiffMode::kNone).within_unique_ptr();
+    let kernel = kernel.into_raw();
+    let mut callable = unsafe {
+        UniquePtr::from_raw(kernel.cast::<Callable>())
+    };
+    let ty = chirp_sys::taichi::lang::PrimitiveType::get(chirp_sys::taichi::lang::PrimitiveTypeID::u32_);
+    callable.as_mut().unwrap().insert_ret(&*ty.within_box().as_ref());
+    callable.as_mut().unwrap().finalize_rets();
 
     unsafe {
-        aot_builder.as_mut().unwrap().add(&ident, kernel.into_raw());
+        aot_builder.as_mut().unwrap().add(&ident, kernel);
     }
     cxx::let_cxx_string!(out_dir = ".");
     cxx::let_cxx_string!(filename = "");

@@ -9,6 +9,7 @@ autocxx::include_cpp! {
     // #include "taichi/ir/shim.h"
     #include "taichi/program/program.h"
     #include "taichi/program/kernel.h"
+    #include "taichi/program/callable.h"
     name!(ffi)
     safety!(unsafe_ffi)
     generate!("taichi::lang::AotModuleBuilder")
@@ -17,6 +18,7 @@ autocxx::include_cpp! {
     generate!("taichi::lang::PrimitiveType")
     generate!("taichi::lang::Program")
     generate!("taichi::lang::Kernel")
+    generate!("taichi::lang::Callable")
     // extern_cpp_opaque_type!("taichi::lang::Kernel", ffi2::Kernel)
     generate!("taichi::lang::SNode")
     block!("taichi::lang::aot::Kernel")

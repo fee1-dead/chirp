@@ -17,6 +17,7 @@
             cmake
             pybind11
             llvm_15 # specifically required by taichi
+            lldb_15
             xorg.libX11
             xorg.libXrandr
             xorg.libXinerama
@@ -27,6 +28,7 @@
             libxml2.dev # for statically linking LLVM
             ncurses
             mold
+            libz
             stdenv.cc.cc.lib
           ];
         LIBCLANG_PATH = "${llvmPackages.libclang.lib}/lib";
