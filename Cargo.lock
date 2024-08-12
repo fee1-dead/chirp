@@ -183,6 +183,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "chirp-example"
+version = "0.1.0"
+dependencies = [
+ "chirp-rt",
+]
+
+[[package]]
 name = "chirp-rt"
 version = "0.1.0"
 dependencies = [
