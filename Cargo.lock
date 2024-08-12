@@ -178,6 +178,7 @@ dependencies = [
  "autocxx",
  "autocxx-build",
  "chirp-sys",
+ "chirp-wrapper",
  "cxx",
 ]
 

@@ -1,9 +1,11 @@
 mod arch;
+mod ir;
 mod program;
-mod ir_builder;
-mod types;
+mod aot;
+mod inc;
 
-pub use types::PrimTy;
+pub use ir::*;
 pub use arch::Arch;
-pub use program::Program;
-pub use ir_builder::IRBuilder;
+pub use program::*;
+pub use aot::*;
+pub use inc::*;

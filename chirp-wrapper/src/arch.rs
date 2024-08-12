@@ -1,6 +1,6 @@
 use chirp_sys::taichi;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Arch {
     X64,
     Arm64,
@@ -31,22 +31,6 @@ impl Arch {
             Arch::Dx11 => taichi::Arch::dx11,
             Arch::Dx12 => taichi::Arch::dx12,
             Arch::Vulkan => taichi::Arch::vulkan,
-        }
-    }
-    pub(crate) fn from_sys(sys_arch: taichi::Arch) -> Option<Self> {
-        match sys_arch {
-            taichi::Arch::amdgpu => Some(Arch::AMDGPU),
-            taichi::Arch::js => Some(Arch::JS),
-            taichi::Arch::gles => Some(Arch::GLES),
-            taichi::Arch::cuda => Some(Arch::Cuda),
-            taichi::Arch::x64 => Some(Arch::X64),
-            taichi::Arch::arm64 => Some(Arch::Arm64),
-            taichi::Arch::metal => Some(Arch::Metal),
-            taichi::Arch::opengl => Some(Arch::OpenGL),
-            taichi::Arch::opencl => Some(Arch::OpenCL),
-            taichi::Arch::dx11 => Some(Arch::Dx11),
-            taichi::Arch::dx12 => Some(Arch::Dx12),
-            taichi::Arch::vulkan => Some(Arch::Vulkan),
         }
     }
 }

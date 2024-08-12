@@ -1,7 +1,7 @@
 use autocxx::prelude::*;
 use chirp_sys::taichi::lang;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum PrimTy {
     F16,
     F32,
@@ -42,7 +42,7 @@ impl From<PrimTy> for DataType {
             PrimTy::Unknown => lang::PrimitiveTypeID::unknown,
         };
 
-        DataType {
+        DataType {  
             inner: lang::PrimitiveType::get(primitive_type_id).within_unique_ptr(),
         }
     }
