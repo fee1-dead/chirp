@@ -1,7 +1,11 @@
 [workspace]
 members = [
-    "chirp-sys"
-, "chirp-wrapper"]
+    "chirp-rt",
+    "chirp-rt/macros",
+    "chirp-sys",
+    "chirpc",
+    "chirp-wrapper"
+]
 [package]
 name = "chirp"
 version = "0.1.0"
