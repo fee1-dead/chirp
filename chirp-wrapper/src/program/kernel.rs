@@ -8,33 +8,29 @@ use chirp_sys::taichi::lang;
 use crate::Program;
 use crate::AutodiffMode;
 use crate::DataType;
-pub struct Kernel {
-    inner: UniquePtr<lang::Kernel>
-}
+pub struct Kernel { }
 
 pub struct Callable {
     inner: UniquePtr<lang::Callable>
 }
 
 impl Kernel {
-    pub fn from_ir(mut prog: Program, ir: Pin<Box<UniquePtr<lang::IRNode>>>, name: &str, autodiff_mode: AutodiffMode) -> Self {
-        cxx::let_cxx_string!(iden = name);
-        let inner = lang::Kernel::new2(prog.origin(), ir, &iden, autodiff_mode.to_sys()).within_unique_ptr();
-        Kernel { inner }
-    }
-
-    pub fn into_raw(self) -> *mut lang::Kernel {
-        self.inner.into_raw()
+    pub fn from_ir(prog: &mut Program , ir: Pin<Box<UniquePtr<lang::IRNode>>>, name: &str, autodiff_mode: AutodiffMode) -> *mut lang::Kernel {
+        cxx::let_cxx_string!(ident = name);
+        lang::Kernel::new2(prog.origin(), ir, &ident, autodiff_mode.to_sys()).within_unique_ptr().into_raw()
     }
 }
 
 impl Callable {
-    pub fn new(inner: UniquePtr<lang::Callable>) -> Self {
+    pub fn new(kernel: *mut lang::Kernel) -> Self {
+        let inner = unsafe {
+            UniquePtr::from_raw(kernel.cast::<lang::Callable>())
+        };
         Callable { inner }
     }
 
     pub fn insert_ret(&mut self, dt: DataType) -> c_int {
-        self.inner.as_mut().unwrap().insert_ret(dt.into_inner().borrow())
+        self.inner.as_mut().unwrap().insert_ret(dt.uni_ptr().borrow())
     }
 
     pub fn finalize_rets(&mut self) {

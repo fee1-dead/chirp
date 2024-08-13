@@ -1,6 +1,6 @@
 use chirp_sys::taichi;
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Arch {
     X64,
     Arm64,

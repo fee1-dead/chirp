@@ -1,7 +1,8 @@
-use autocxx::prelude::*;
+use autocxx::WithinUniquePtr;
 use chirp_sys::taichi::lang;
+use cxx::UniquePtr;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum PrimTy {
     F16,
     F32,
@@ -48,8 +49,8 @@ impl From<PrimTy> for DataType {
     }
 }
 
-impl DataType { 
-    pub fn into_inner(self) -> UniquePtr<lang::DataType> {
+impl DataType {
+    pub fn uni_ptr(self) -> UniquePtr<lang::DataType> {
         self.inner
     }
 }

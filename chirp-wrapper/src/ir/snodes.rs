@@ -1,5 +1,6 @@
+use autocxx::{c_int, WithinUniquePtr};
 use chirp_sys::taichi::lang;
-use autocxx::prelude::*;
+use cxx::UniquePtr;
 use std::ptr::null_mut;
 
 pub struct SNode {

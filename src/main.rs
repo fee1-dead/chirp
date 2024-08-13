@@ -1,9 +1,7 @@
 // temp for testing
-
-use std::{borrow::Borrow, env};
+use std::env;
 use chirp_wrapper::*;
-use cxx::UniquePtr;
-use chirp_sys::taichi::lang;
+
 fn main() {
     unsafe {
         env::set_var("TI_LIB_DIR", chirp_sys::TAICHI_LIBDIR)
@@ -19,9 +17,9 @@ fn main() {
 */
     let arch = Arch::X64;
     let mut prog = Program::new(arch.clone());
-    let snode = chirp_wrapper::SNode::new(0, chirp_wrapper::SNodeType::Root);
+    let snode = SNode::new(0, SNodeType::Root);
     prog.add_snode_tree(snode, true);
-    let mut aot_builder = prog.make_aot_module_builder(arch, &cxx::CxxVector::new());
+    let mut aot_builder = prog.make_aot_module_builder(arch, &CVec::new());
 
 
 /*
@@ -64,32 +62,18 @@ fn main() {
     callable.as_mut().unwrap().insert_ret(&*ty.within_box().as_ref());
     callable.as_mut().unwrap().finalize_rets();
 
-    let mut callable = kernel.cast();
-    callable.insert_ret(ty);
-    callable.finalize_rets();
-
     unsafe {
         aot_builder.as_mut().unwrap().add(&ident, kernel);
     }
-
-    cxx::let_cxx_string!(out_dir = "./chirp-output/");
-    cxx::let_cxx_string!(filename = "");
     aot_builder.dump(&out_dir, &filename);
 */
-    let ident = "foo";
+    let ident = "fkre";
     let out_dir = "./chirp-output/";
-    let filename = "nig";
+    let filename = "";
 
-    let kernel = Kernel::from_ir(prog, builder.extract_ir().cast(), ident, AutodiffMode::KNone);
+    let kernel = Kernel::from_ir(&mut prog, builder.extract_ir().cast(), ident, AutodiffMode::KNone);
+    let mut callable = Callable::new(kernel);
     let ty = DataType::from(PrimTy::U32);
-    let kernel = kernel.into_raw();
-    let mut callable = unsafe {
-        UniquePtr::from_raw(kernel.cast::<lang::Callable>())
-    };
-    callable.as_mut().unwrap().insert_ret(ty.into_inner().borrow());
-    callable.as_mut().unwrap().finalize_rets();
-
-    let mut callable = kernel.cast();
     callable.insert_ret(ty);
     callable.finalize_rets();
 

@@ -1,5 +1,5 @@
-use autocxx::prelude::*;
 use std::pin::Pin;
+use autocxx::WithinBox;
 use chirp_sys::taichi::lang;
 use crate::types;
 use crate::Block;
@@ -15,7 +15,7 @@ impl IRBuilder {
     }
 
     pub fn create_local_var(&mut self, dt: types::DataType) -> *mut lang::AllocaStmt {
-        self.origin().create_local_var(dt.into_inner())
+        self.origin().create_local_var(dt.uni_ptr())
     }
 
     pub fn create_local_store(&mut self, ptr: *mut lang::AllocaStmt, data: *mut lang::Stmt) {

@@ -14,4 +14,3 @@ edition = "2021"
 [dependencies]
 chirp-sys = { path = "chirp-sys" }
 chirp-wrapper = {path = "chirp-wrapper"}
-cxx = "1.0.124"

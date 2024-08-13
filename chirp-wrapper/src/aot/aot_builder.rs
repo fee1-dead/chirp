@@ -1,5 +1,6 @@
 use cxx::UniquePtr;
 use chirp_sys::taichi::lang;
+
 pub struct AotModuleBuilder {
     inner: UniquePtr<lang::AotModuleBuilder>,
 }
