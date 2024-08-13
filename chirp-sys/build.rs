@@ -20,7 +20,7 @@ fn main() {
         .build();
 
     println!("cargo:rustc-link-search=native={}", dst.display());
-    println!("cargo:rustc-link-search=native={}", dst.join("lib64").display());
+    println!("cargo:rustc-link-search=native={}", dst.join("lib").display());
     let libdir = llvm_config(|cmd| cmd.arg("--libdir"));
     println!("cargo:rustc-link-search=native={libdir}"); 
 

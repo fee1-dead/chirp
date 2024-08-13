@@ -14,8 +14,4 @@ edition = "2021"
 [dependencies]
 chirp-sys = { path = "chirp-sys" }
 chirp-wrapper = {path = "chirp-wrapper"}
-autocxx = "0.27.0"
 cxx = "1.0.124"
-
-[build-dependencies]
-autocxx-build = "0.27.0"

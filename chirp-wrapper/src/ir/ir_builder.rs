@@ -2,6 +2,7 @@ use autocxx::prelude::*;
 use std::pin::Pin;
 use chirp_sys::taichi::lang;
 use crate::types;
+use crate::Block;
 
 pub struct IRBuilder {
     inner: Pin<Box<lang::IRBuilder>>,
@@ -14,7 +15,7 @@ impl IRBuilder {
     }
 
     pub fn create_local_var(&mut self, dt: types::DataType) -> *mut lang::AllocaStmt {
-        self.origin().create_local_var(dt.as_value_param())
+        self.origin().create_local_var(dt.into_inner())
     }
 
     pub fn create_local_store(&mut self, ptr: *mut lang::AllocaStmt, data: *mut lang::Stmt) {
@@ -27,6 +28,11 @@ impl IRBuilder {
 
     pub fn create_return(&mut self, value: *mut lang::Stmt) -> *mut lang::ReturnStmt {
         unsafe { self.origin().create_return(value) }
+    }
+
+    pub fn extract_ir(&mut self) -> Block {
+        let blk_ptr = self.origin().extract_ir();
+        Block::new(blk_ptr)
     }
 
     pub fn origin(&mut self) -> Pin<&mut lang::IRBuilder> {

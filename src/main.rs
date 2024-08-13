@@ -1,11 +1,9 @@
-use std::env;
-use std::ptr::null_mut;
-
 // temp for testing
-use autocxx::prelude::*;
-use chirp_sys::taichi::lang::{Callable, IRNode, Kernel, SNode, SNodeType};
-use chirp_wrapper::*;
 
+use std::{borrow::Borrow, env};
+use chirp_wrapper::*;
+use cxx::UniquePtr;
+use chirp_sys::taichi::lang;
 fn main() {
     unsafe {
         env::set_var("TI_LIB_DIR", chirp_sys::TAICHI_LIBDIR)
@@ -24,7 +22,6 @@ fn main() {
     let snode = chirp_wrapper::SNode::new(0, chirp_wrapper::SNodeType::Root);
     prog.add_snode_tree(snode, true);
     let mut aot_builder = prog.make_aot_module_builder(arch, &cxx::CxxVector::new());
-
 
 
 /*
@@ -50,12 +47,14 @@ fn main() {
     
 
 
+/*
     cxx::let_cxx_string!(ident = "foo");
     let ir = unsafe {
         UniquePtr::from_raw(builder.origin().extract_ir().into_raw().cast::<IRNode>())
     };
-
     let ir2 = Box::pin(ir);
+*/
+/*
     let kernel = Kernel::new2(prog.origin(), ir2, &ident, chirp_sys::AutodiffMode::kNone).within_unique_ptr();
     let kernel = kernel.into_raw();
     let mut callable = unsafe {
@@ -65,10 +64,35 @@ fn main() {
     callable.as_mut().unwrap().insert_ret(&*ty.within_box().as_ref());
     callable.as_mut().unwrap().finalize_rets();
 
+    let mut callable = kernel.cast();
+    callable.insert_ret(ty);
+    callable.finalize_rets();
+
     unsafe {
         aot_builder.as_mut().unwrap().add(&ident, kernel);
     }
+
     cxx::let_cxx_string!(out_dir = "./chirp-output/");
     cxx::let_cxx_string!(filename = "");
     aot_builder.dump(&out_dir, &filename);
+*/
+    let ident = "foo";
+    let out_dir = "./chirp-output/";
+    let filename = "nig";
+
+    let kernel = Kernel::from_ir(prog, builder.extract_ir().cast(), ident, AutodiffMode::KNone);
+    let ty = DataType::from(PrimTy::U32);
+    let kernel = kernel.into_raw();
+    let mut callable = unsafe {
+        UniquePtr::from_raw(kernel.cast::<lang::Callable>())
+    };
+    callable.as_mut().unwrap().insert_ret(ty.into_inner().borrow());
+    callable.as_mut().unwrap().finalize_rets();
+
+    let mut callable = kernel.cast();
+    callable.insert_ret(ty);
+    callable.finalize_rets();
+
+    aot_builder.add(ident, kernel);
+    aot_builder.dump(out_dir, filename);
 }

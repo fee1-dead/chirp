@@ -48,8 +48,8 @@ impl From<PrimTy> for DataType {
     }
 }
 
-impl DataType {
-    pub fn as_value_param(&self) -> impl ValueParam<lang::DataType> + '_ {
-        &*self.inner
+impl DataType { 
+    pub fn into_inner(self) -> UniquePtr<lang::DataType> {
+        self.inner
     }
 }
