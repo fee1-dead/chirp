@@ -12,9 +12,7 @@ pub struct ChirpCallbacks;
 
 impl Callbacks for ChirpCallbacks {
     fn config(&mut self, config: &mut rustc_interface::interface::Config) {
-        config.override_queries = Some(|sess, prov| {
-            
-        })
+        config.override_queries = Some(|sess, prov| {})
     }
 }
 
@@ -22,10 +20,10 @@ fn main() {
     println!("Hello, world!");
     let early_dcx = EarlyDiagCtxt::new(ErrorOutputType::default());
     let args = rustc_driver::args::raw_args(&early_dcx)
-    .unwrap_or_else(|_| std::process::exit(rustc_driver::EXIT_FAILURE));
+        .unwrap_or_else(|_| std::process::exit(rustc_driver::EXIT_FAILURE));
 
     let using_internal_features =
-    rustc_driver::install_ice_hook("https://github.com/fee1-dead/chirp/issues/new", |_| ());
+        rustc_driver::install_ice_hook("https://github.com/fee1-dead/chirp/issues/new", |_| ());
 
     rustc_driver::install_ctrlc_handler();
     rustc_driver::catch_with_exit_code(move || {

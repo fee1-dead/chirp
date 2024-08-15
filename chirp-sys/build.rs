@@ -20,11 +20,17 @@ fn main() {
         .build();
 
     println!("cargo:rustc-link-search=native={}", dst.display());
-    println!("cargo:rustc-link-search=native={}", dst.join("lib").display());
+    println!(
+        "cargo:rustc-link-search=native={}",
+        dst.join("lib").display()
+    );
     let libdir = llvm_config(|cmd| cmd.arg("--libdir"));
-    println!("cargo:rustc-link-search=native={libdir}"); 
+    println!("cargo:rustc-link-search=native={libdir}");
 
-    println!("cargo:rustc-env=CHIRP_TAICHI_LIB_DIR={}", dst.join("python/taichi/_lib/runtime").display()); 
+    println!(
+        "cargo:rustc-env=CHIRP_TAICHI_LIB_DIR={}",
+        dst.join("python/taichi/_lib/runtime").display()
+    );
 
     println!("cargo:rustc-link-lib=static=taichi_core");
     println!("cargo:rustc-link-lib=static=taichi_common");
@@ -34,7 +40,6 @@ fn main() {
     println!("cargo:rustc-link-lib=static=opengl_rhi");
     println!("cargo:rustc-link-lib=static=opengl_program_impl");
     println!("cargo:rustc-link-lib=static=llvm_rhi");
-
 
     // println!("cargo:rustc-link-lib=static=vulkan_rhi");
     // println!("cargo:rustc-link-lib=static=amdgpu_rhi");
@@ -61,20 +66,25 @@ fn main() {
     // println!("cargo:rustc-link-lib=static=metal_program_impl");
     println!("cargo:rustc-link-lib=static=compilation_manager");
     // println!("cargo:rustc-link-lib=static=dx_rhi");
-    
+
     println!("cargo:rustc-link-lib=static=glfw3");
     println!("cargo:rustc-link-lib=static=spirv-cross-core");
     println!("cargo:rustc-link-lib=static=spirv-cross-glsl");
     println!("cargo:rustc-link-lib=static=SPIRV-Tools");
     println!("cargo:rustc-link-lib=static=SPIRV-Tools-opt");
     let llvm_libnames = llvm_config(|cmd| cmd.args(["--link-static", "--libnames"]));
-    let llvm_libnames = llvm_libnames.split([' ', '\n']).filter_map(|s| s.strip_prefix("lib")).filter_map(|s| s.strip_suffix(".a"));
+    let llvm_libnames = llvm_libnames
+        .split([' ', '\n'])
+        .filter_map(|s| s.strip_prefix("lib"))
+        .filter_map(|s| s.strip_suffix(".a"));
     for lib in llvm_libnames {
         println!("cargo:rustc-link-lib=static={lib}");
     }
 
     let llvm_systemlibnames = llvm_config(|cmd| cmd.args(["--link-static", "--system-libs"]));
-    let llvm_systemlibnames = llvm_systemlibnames.split([' ', '\n']).filter_map(|s| s.strip_prefix("-l"));
+    let llvm_systemlibnames = llvm_systemlibnames
+        .split([' ', '\n'])
+        .filter_map(|s| s.strip_prefix("-l"));
     for lib in llvm_systemlibnames {
         println!("cargo:rustc-link-lib=dylib={lib}");
     }

@@ -38,8 +38,10 @@ impl SNodeType {
 }
 
 impl SNode {
-    pub fn new(depth: i32, ty: SNodeType,) -> Self {
-        let inner = unsafe { lang::SNode::new1(c_int(depth), ty.to_sys(), null_mut(), null_mut()).within_unique_ptr() };
+    pub fn new(depth: i32, ty: SNodeType) -> Self {
+        let inner = unsafe {
+            lang::SNode::new1(c_int(depth), ty.to_sys(), null_mut(), null_mut()).within_unique_ptr()
+        };
         SNode { inner }
     }
 

@@ -1,6 +1,9 @@
 use chirp_sys;
 pub enum AutodiffMode {
-    KForward, KReverse, KNone, KCheckAutodiffValid
+    KForward,
+    KReverse,
+    KNone,
+    KCheckAutodiffValid,
 }
 
 impl AutodiffMode {

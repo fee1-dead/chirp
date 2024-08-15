@@ -1,17 +1,23 @@
-use cxx::UniquePtr;
 use chirp_sys::taichi::lang;
+use cxx::UniquePtr;
 use std::pin::Pin;
 
+pub trait IRNode {
+    fn cast(&mut self) -> Pin<Box<UniquePtr<lang::IRNode>>>;
+}
+
 pub struct Block {
-    inner: UniquePtr<lang::Block>
+    inner: *mut lang::Block,
 }
 
 impl Block {
-    pub fn new(inner: UniquePtr<lang::Block>) -> Self {
+    pub fn new(inner: *mut lang::Block) -> Self {
         Block { inner }
     }
+}
 
-    pub fn cast(self) -> Pin<Box<UniquePtr<lang::IRNode>>> {
-        unsafe { Box::pin(UniquePtr::from_raw(self.inner.into_raw().cast::<lang::IRNode>())) }
+impl IRNode for Block {
+    fn cast(&mut self) -> Pin<Box<UniquePtr<lang::IRNode>>> {
+        unsafe { Box::pin(UniquePtr::from_raw(self.inner.cast::<lang::IRNode>())) }
     }
 }

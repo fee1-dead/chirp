@@ -1,7 +1,7 @@
 use cxx::UniquePtr;
 
 pub struct CVec {
-    inner: UniquePtr<cxx::CxxVector<cxx::CxxString>>
+    inner: UniquePtr<cxx::CxxVector<cxx::CxxString>>,
 }
 
 impl CVec {

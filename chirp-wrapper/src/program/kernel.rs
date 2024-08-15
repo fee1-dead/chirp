@@ -1,39 +1,40 @@
-use std::borrow::Borrow;
-use std::pin::Pin;
-
-use autocxx::c_int;
-use autocxx::WithinUniquePtr;
-use cxx::UniquePtr;
-use chirp_sys::taichi::lang;
-use crate::Program;
 use crate::AutodiffMode;
 use crate::DataType;
-pub struct Kernel { }
-
-pub struct Callable {
-    inner: UniquePtr<lang::Callable>
+use crate::IRNode;
+use crate::Program;
+use autocxx::c_int;
+use autocxx::WithinUniquePtr;
+use chirp_sys::taichi::lang;
+use cxx::UniquePtr;
+pub struct Kernel {
+    inner: *mut lang::Kernel,
+    callable: UniquePtr<lang::Callable>,
 }
 
 impl Kernel {
-    pub fn from_ir(prog: &mut Program , ir: Pin<Box<UniquePtr<lang::IRNode>>>, name: &str, autodiff_mode: AutodiffMode) -> *mut lang::Kernel {
+    pub fn from_ir(
+        prog: &mut Program,
+        mut ir: impl IRNode,
+        name: &str,
+        autodiff_mode: AutodiffMode,
+    ) -> Self {
         cxx::let_cxx_string!(ident = name);
-        lang::Kernel::new2(prog.origin(), ir, &ident, autodiff_mode.to_sys()).within_unique_ptr().into_raw()
-    }
-}
-
-impl Callable {
-    pub fn new(kernel: *mut lang::Kernel) -> Self {
-        let inner = unsafe {
-            UniquePtr::from_raw(kernel.cast::<lang::Callable>())
-        };
-        Callable { inner }
+        let inner = lang::Kernel::new2(prog.pin(), ir.cast(), &ident, autodiff_mode.to_sys())
+            .within_unique_ptr()
+            .into_raw();
+        let callable = unsafe { UniquePtr::from_raw(inner.cast::<lang::Callable>()) };
+        Kernel { inner, callable }
     }
 
     pub fn insert_ret(&mut self, dt: DataType) -> c_int {
-        self.inner.as_mut().unwrap().insert_ret(dt.uni_ptr().borrow())
+        self.callable.as_mut().unwrap().insert_ret(&dt.uni_ptr())
     }
 
     pub fn finalize_rets(&mut self) {
-        self.inner.as_mut().unwrap().finalize_rets()
+        self.callable.as_mut().unwrap().finalize_rets();
+    }
+
+    pub fn raw_ptr(&self) -> &*mut lang::Kernel {
+        &self.inner
     }
 }

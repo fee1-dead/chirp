@@ -1,5 +1,6 @@
-use cxx::UniquePtr;
+use crate::Kernel;
 use chirp_sys::taichi::lang;
+use cxx::UniquePtr;
 
 pub struct AotModuleBuilder {
     inner: UniquePtr<lang::AotModuleBuilder>,
@@ -11,9 +12,9 @@ impl AotModuleBuilder {
         AotModuleBuilder { inner }
     }
 
-    pub fn add(&mut self, name: &str, kernel: *mut lang::Kernel) {
+    pub fn add(&mut self, name: &str, kernel: &Kernel) {
         cxx::let_cxx_string!(ident = name);
-        unsafe { self.inner.as_mut().unwrap().add(&ident, kernel) }
+        unsafe { self.inner.as_mut().unwrap().add(&ident, *kernel.raw_ptr()) }
     }
 
     pub fn dump(&mut self, output_dir: &str, filename: &str) {
