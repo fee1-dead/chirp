@@ -26,7 +26,7 @@ impl {class_name} {{
     pub fn new(inner: *mut lang::{class_name}) -> Self {{
         {class_name} {{ inner }}
     }}
-    pub fn into_raw(&self) -> &*mut lang::{class_name} {{
+    pub fn raw(&self) -> &*mut lang::{class_name} {{
         &self.inner
     }}
 }}

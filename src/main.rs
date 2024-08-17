@@ -15,8 +15,8 @@ fn main() {
      */
     // let arch = Arch::X64;
     let mut prog = Program::new(Arch::X64);
-    let snode = SNode::new(0, SNodeType::Root);
-    prog.add_snode_tree(snode, true);
+    let mut snode = SNode::new(0, SNodeType::Root);
+    prog.add_snode_tree(&mut snode, true);
     let mut aot_builder = prog.make_aot_module_builder(Arch::X64, &CVec::new());
 
     /*
@@ -31,14 +31,37 @@ fn main() {
     //        builder.as_mut().create_return(loaded.cast());
     //    }
     */
-    let mut builder = IRBuilder::new();
-    let ty = DataType::from(PrimTy::F32);
-    let v = builder.create_local_var(ty);
-    let value = builder.get_float32(0.2);
-    builder.create_local_store(&v, value);
-    let loaded = builder.create_local_load(&v);
-    builder.create_return(loaded);
+    let ident1 = "simple_ret";
+    let mut kernel_simple_ret: Kernel;
+    let mut kernel_init: Kernel;
+    let mut kernel_ret: Kernel;
+    /*
+    @ti.kernel
+    def ret() -> ti.f32:
+      sum = 0.2
+      return sum
+     */
+    {
+        let mut builder = IRBuilder::new();
+        let sum = builder.create_local_var(DataType::from(PrimTy::F32));
+        let value = builder.get_float32(0.2);
+        builder.create_local_store(&sum, value);
+        let loaded = builder.create_local_load(&sum);
+        builder.create_return(loaded);
 
+        kernel_simple_ret =
+            Kernel::from_ir(&mut prog, builder.extract_ir(), ident1, AutodiffMode::KNone);
+        kernel_simple_ret.insert_ret(DataType::from(PrimTy::F32));
+        kernel_simple_ret.finalize_rets();
+    }
+
+    {
+        let mut builder = IRBuilder::new();
+        let zero = builder.get_int32(0);
+        let n_stmt = builder.get_int32(10);
+        let looop = builder.create_range_for(zero, n_stmt, true, 1, 0, false);
+        {}
+    }
     /*
     // cxx::let_cxx_string!(ident = "foo");
     // let ir = unsafe {
@@ -61,14 +84,9 @@ fn main() {
         // }
         // aot_builder.dump(&out_dir, &filename);
     */
-    let ident = "1kr2";
     let out_dir = "./chirp-output/";
-    let filename = "";
+    let filename = "cmcmmmma";
 
-    let mut kernel = Kernel::from_ir(&mut prog, builder.extract_ir(), ident, AutodiffMode::KNone);
-    kernel.insert_ret(DataType::from(PrimTy::F32));
-    kernel.finalize_rets();
-
-    aot_builder.add(ident, &kernel);
+    aot_builder.add(ident1, &kernel_simple_ret);
     aot_builder.dump(out_dir, filename);
 }

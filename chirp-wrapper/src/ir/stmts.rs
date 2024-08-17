@@ -12,7 +12,7 @@ impl AllocaStmt {
     pub fn new(inner: *mut lang::AllocaStmt) -> Self {
         AllocaStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::AllocaStmt {
+    pub fn raw(&self) -> &*mut lang::AllocaStmt {
         &self.inner
     }
 }
@@ -31,7 +31,7 @@ impl WhileControlStmt {
     pub fn new(inner: *mut lang::WhileControlStmt) -> Self {
         WhileControlStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::WhileControlStmt {
+    pub fn raw(&self) -> &*mut lang::WhileControlStmt {
         &self.inner
     }
 }
@@ -50,7 +50,7 @@ impl ContinueStmt {
     pub fn new(inner: *mut lang::ContinueStmt) -> Self {
         ContinueStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ContinueStmt {
+    pub fn raw(&self) -> &*mut lang::ContinueStmt {
         &self.inner
     }
 }
@@ -69,7 +69,7 @@ impl DecorationStmt {
     pub fn new(inner: *mut lang::DecorationStmt) -> Self {
         DecorationStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::DecorationStmt {
+    pub fn raw(&self) -> &*mut lang::DecorationStmt {
         &self.inner
     }
 }
@@ -88,7 +88,7 @@ impl UnaryOpStmt {
     pub fn new(inner: *mut lang::UnaryOpStmt) -> Self {
         UnaryOpStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::UnaryOpStmt {
+    pub fn raw(&self) -> &*mut lang::UnaryOpStmt {
         &self.inner
     }
 }
@@ -107,7 +107,7 @@ impl ArgLoadStmt {
     pub fn new(inner: *mut lang::ArgLoadStmt) -> Self {
         ArgLoadStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ArgLoadStmt {
+    pub fn raw(&self) -> &*mut lang::ArgLoadStmt {
         &self.inner
     }
 }
@@ -126,7 +126,7 @@ impl RandStmt {
     pub fn new(inner: *mut lang::RandStmt) -> Self {
         RandStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::RandStmt {
+    pub fn raw(&self) -> &*mut lang::RandStmt {
         &self.inner
     }
 }
@@ -145,7 +145,7 @@ impl BinaryOpStmt {
     pub fn new(inner: *mut lang::BinaryOpStmt) -> Self {
         BinaryOpStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::BinaryOpStmt {
+    pub fn raw(&self) -> &*mut lang::BinaryOpStmt {
         &self.inner
     }
 }
@@ -164,7 +164,7 @@ impl TernaryOpStmt {
     pub fn new(inner: *mut lang::TernaryOpStmt) -> Self {
         TernaryOpStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::TernaryOpStmt {
+    pub fn raw(&self) -> &*mut lang::TernaryOpStmt {
         &self.inner
     }
 }
@@ -183,7 +183,7 @@ impl AtomicOpStmt {
     pub fn new(inner: *mut lang::AtomicOpStmt) -> Self {
         AtomicOpStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::AtomicOpStmt {
+    pub fn raw(&self) -> &*mut lang::AtomicOpStmt {
         &self.inner
     }
 }
@@ -202,7 +202,7 @@ impl ExternalPtrStmt {
     pub fn new(inner: *mut lang::ExternalPtrStmt) -> Self {
         ExternalPtrStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ExternalPtrStmt {
+    pub fn raw(&self) -> &*mut lang::ExternalPtrStmt {
         &self.inner
     }
 }
@@ -221,7 +221,7 @@ impl GlobalPtrStmt {
     pub fn new(inner: *mut lang::GlobalPtrStmt) -> Self {
         GlobalPtrStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::GlobalPtrStmt {
+    pub fn raw(&self) -> &*mut lang::GlobalPtrStmt {
         &self.inner
     }
 }
@@ -240,7 +240,7 @@ impl MatrixOfGlobalPtrStmt {
     pub fn new(inner: *mut lang::MatrixOfGlobalPtrStmt) -> Self {
         MatrixOfGlobalPtrStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::MatrixOfGlobalPtrStmt {
+    pub fn raw(&self) -> &*mut lang::MatrixOfGlobalPtrStmt {
         &self.inner
     }
 }
@@ -259,7 +259,7 @@ impl MatrixOfMatrixPtrStmt {
     pub fn new(inner: *mut lang::MatrixOfMatrixPtrStmt) -> Self {
         MatrixOfMatrixPtrStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::MatrixOfMatrixPtrStmt {
+    pub fn raw(&self) -> &*mut lang::MatrixOfMatrixPtrStmt {
         &self.inner
     }
 }
@@ -278,7 +278,7 @@ impl MatrixPtrStmt {
     pub fn new(inner: *mut lang::MatrixPtrStmt) -> Self {
         MatrixPtrStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::MatrixPtrStmt {
+    pub fn raw(&self) -> &*mut lang::MatrixPtrStmt {
         &self.inner
     }
 }
@@ -297,7 +297,7 @@ impl SNodeOpStmt {
     pub fn new(inner: *mut lang::SNodeOpStmt) -> Self {
         SNodeOpStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::SNodeOpStmt {
+    pub fn raw(&self) -> &*mut lang::SNodeOpStmt {
         &self.inner
     }
 }
@@ -316,7 +316,7 @@ impl ExternalTensorShapeAlongAxisStmt {
     pub fn new(inner: *mut lang::ExternalTensorShapeAlongAxisStmt) -> Self {
         ExternalTensorShapeAlongAxisStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ExternalTensorShapeAlongAxisStmt {
+    pub fn raw(&self) -> &*mut lang::ExternalTensorShapeAlongAxisStmt {
         &self.inner
     }
 }
@@ -335,7 +335,7 @@ impl ExternalTensorBasePtrStmt {
     pub fn new(inner: *mut lang::ExternalTensorBasePtrStmt) -> Self {
         ExternalTensorBasePtrStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ExternalTensorBasePtrStmt {
+    pub fn raw(&self) -> &*mut lang::ExternalTensorBasePtrStmt {
         &self.inner
     }
 }
@@ -354,7 +354,7 @@ impl AssertStmt {
     pub fn new(inner: *mut lang::AssertStmt) -> Self {
         AssertStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::AssertStmt {
+    pub fn raw(&self) -> &*mut lang::AssertStmt {
         &self.inner
     }
 }
@@ -373,7 +373,7 @@ impl ExternalFuncCallStmt {
     pub fn new(inner: *mut lang::ExternalFuncCallStmt) -> Self {
         ExternalFuncCallStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ExternalFuncCallStmt {
+    pub fn raw(&self) -> &*mut lang::ExternalFuncCallStmt {
         &self.inner
     }
 }
@@ -392,7 +392,7 @@ impl RangeAssumptionStmt {
     pub fn new(inner: *mut lang::RangeAssumptionStmt) -> Self {
         RangeAssumptionStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::RangeAssumptionStmt {
+    pub fn raw(&self) -> &*mut lang::RangeAssumptionStmt {
         &self.inner
     }
 }
@@ -411,7 +411,7 @@ impl LoopUniqueStmt {
     pub fn new(inner: *mut lang::LoopUniqueStmt) -> Self {
         LoopUniqueStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::LoopUniqueStmt {
+    pub fn raw(&self) -> &*mut lang::LoopUniqueStmt {
         &self.inner
     }
 }
@@ -430,7 +430,7 @@ impl GlobalLoadStmt {
     pub fn new(inner: *mut lang::GlobalLoadStmt) -> Self {
         GlobalLoadStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::GlobalLoadStmt {
+    pub fn raw(&self) -> &*mut lang::GlobalLoadStmt {
         &self.inner
     }
 }
@@ -449,7 +449,7 @@ impl GlobalStoreStmt {
     pub fn new(inner: *mut lang::GlobalStoreStmt) -> Self {
         GlobalStoreStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::GlobalStoreStmt {
+    pub fn raw(&self) -> &*mut lang::GlobalStoreStmt {
         &self.inner
     }
 }
@@ -468,7 +468,7 @@ impl LocalLoadStmt {
     pub fn new(inner: *mut lang::LocalLoadStmt) -> Self {
         LocalLoadStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::LocalLoadStmt {
+    pub fn raw(&self) -> &*mut lang::LocalLoadStmt {
         &self.inner
     }
 }
@@ -487,7 +487,7 @@ impl LocalStoreStmt {
     pub fn new(inner: *mut lang::LocalStoreStmt) -> Self {
         LocalStoreStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::LocalStoreStmt {
+    pub fn raw(&self) -> &*mut lang::LocalStoreStmt {
         &self.inner
     }
 }
@@ -506,7 +506,7 @@ impl IfStmt {
     pub fn new(inner: *mut lang::IfStmt) -> Self {
         IfStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::IfStmt {
+    pub fn raw(&self) -> &*mut lang::IfStmt {
         &self.inner
     }
 }
@@ -525,7 +525,7 @@ impl PrintStmt {
     pub fn new(inner: *mut lang::PrintStmt) -> Self {
         PrintStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::PrintStmt {
+    pub fn raw(&self) -> &*mut lang::PrintStmt {
         &self.inner
     }
 }
@@ -544,7 +544,7 @@ impl ConstStmt {
     pub fn new(inner: *mut lang::ConstStmt) -> Self {
         ConstStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ConstStmt {
+    pub fn raw(&self) -> &*mut lang::ConstStmt {
         &self.inner
     }
 }
@@ -563,7 +563,7 @@ impl RangeForStmt {
     pub fn new(inner: *mut lang::RangeForStmt) -> Self {
         RangeForStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::RangeForStmt {
+    pub fn raw(&self) -> &*mut lang::RangeForStmt {
         &self.inner
     }
 }
@@ -582,7 +582,7 @@ impl StructForStmt {
     pub fn new(inner: *mut lang::StructForStmt) -> Self {
         StructForStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::StructForStmt {
+    pub fn raw(&self) -> &*mut lang::StructForStmt {
         &self.inner
     }
 }
@@ -601,7 +601,7 @@ impl MeshForStmt {
     pub fn new(inner: *mut lang::MeshForStmt) -> Self {
         MeshForStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::MeshForStmt {
+    pub fn raw(&self) -> &*mut lang::MeshForStmt {
         &self.inner
     }
 }
@@ -620,7 +620,7 @@ impl FuncCallStmt {
     pub fn new(inner: *mut lang::FuncCallStmt) -> Self {
         FuncCallStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::FuncCallStmt {
+    pub fn raw(&self) -> &*mut lang::FuncCallStmt {
         &self.inner
     }
 }
@@ -639,7 +639,7 @@ impl ReferenceStmt {
     pub fn new(inner: *mut lang::ReferenceStmt) -> Self {
         ReferenceStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ReferenceStmt {
+    pub fn raw(&self) -> &*mut lang::ReferenceStmt {
         &self.inner
     }
 }
@@ -658,7 +658,7 @@ impl GetElementStmt {
     pub fn new(inner: *mut lang::GetElementStmt) -> Self {
         GetElementStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::GetElementStmt {
+    pub fn raw(&self) -> &*mut lang::GetElementStmt {
         &self.inner
     }
 }
@@ -677,7 +677,7 @@ impl ReturnStmt {
     pub fn new(inner: *mut lang::ReturnStmt) -> Self {
         ReturnStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ReturnStmt {
+    pub fn raw(&self) -> &*mut lang::ReturnStmt {
         &self.inner
     }
 }
@@ -696,7 +696,7 @@ impl WhileStmt {
     pub fn new(inner: *mut lang::WhileStmt) -> Self {
         WhileStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::WhileStmt {
+    pub fn raw(&self) -> &*mut lang::WhileStmt {
         &self.inner
     }
 }
@@ -715,7 +715,7 @@ impl IntegerOffsetStmt {
     pub fn new(inner: *mut lang::IntegerOffsetStmt) -> Self {
         IntegerOffsetStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::IntegerOffsetStmt {
+    pub fn raw(&self) -> &*mut lang::IntegerOffsetStmt {
         &self.inner
     }
 }
@@ -734,7 +734,7 @@ impl LinearizeStmt {
     pub fn new(inner: *mut lang::LinearizeStmt) -> Self {
         LinearizeStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::LinearizeStmt {
+    pub fn raw(&self) -> &*mut lang::LinearizeStmt {
         &self.inner
     }
 }
@@ -753,7 +753,7 @@ impl GetRootStmt {
     pub fn new(inner: *mut lang::GetRootStmt) -> Self {
         GetRootStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::GetRootStmt {
+    pub fn raw(&self) -> &*mut lang::GetRootStmt {
         &self.inner
     }
 }
@@ -772,7 +772,7 @@ impl SNodeLookupStmt {
     pub fn new(inner: *mut lang::SNodeLookupStmt) -> Self {
         SNodeLookupStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::SNodeLookupStmt {
+    pub fn raw(&self) -> &*mut lang::SNodeLookupStmt {
         &self.inner
     }
 }
@@ -791,7 +791,7 @@ impl GetChStmt {
     pub fn new(inner: *mut lang::GetChStmt) -> Self {
         GetChStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::GetChStmt {
+    pub fn raw(&self) -> &*mut lang::GetChStmt {
         &self.inner
     }
 }
@@ -810,7 +810,7 @@ impl OffloadedStmt {
     pub fn new(inner: *mut lang::OffloadedStmt) -> Self {
         OffloadedStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::OffloadedStmt {
+    pub fn raw(&self) -> &*mut lang::OffloadedStmt {
         &self.inner
     }
 }
@@ -829,7 +829,7 @@ impl LoopIndexStmt {
     pub fn new(inner: *mut lang::LoopIndexStmt) -> Self {
         LoopIndexStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::LoopIndexStmt {
+    pub fn raw(&self) -> &*mut lang::LoopIndexStmt {
         &self.inner
     }
 }
@@ -848,7 +848,7 @@ impl LoopLinearIndexStmt {
     pub fn new(inner: *mut lang::LoopLinearIndexStmt) -> Self {
         LoopLinearIndexStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::LoopLinearIndexStmt {
+    pub fn raw(&self) -> &*mut lang::LoopLinearIndexStmt {
         &self.inner
     }
 }
@@ -867,7 +867,7 @@ impl GlobalThreadIndexStmt {
     pub fn new(inner: *mut lang::GlobalThreadIndexStmt) -> Self {
         GlobalThreadIndexStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::GlobalThreadIndexStmt {
+    pub fn raw(&self) -> &*mut lang::GlobalThreadIndexStmt {
         &self.inner
     }
 }
@@ -886,7 +886,7 @@ impl BlockCornerIndexStmt {
     pub fn new(inner: *mut lang::BlockCornerIndexStmt) -> Self {
         BlockCornerIndexStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::BlockCornerIndexStmt {
+    pub fn raw(&self) -> &*mut lang::BlockCornerIndexStmt {
         &self.inner
     }
 }
@@ -905,7 +905,7 @@ impl GlobalTemporaryStmt {
     pub fn new(inner: *mut lang::GlobalTemporaryStmt) -> Self {
         GlobalTemporaryStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::GlobalTemporaryStmt {
+    pub fn raw(&self) -> &*mut lang::GlobalTemporaryStmt {
         &self.inner
     }
 }
@@ -924,7 +924,7 @@ impl ThreadLocalPtrStmt {
     pub fn new(inner: *mut lang::ThreadLocalPtrStmt) -> Self {
         ThreadLocalPtrStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ThreadLocalPtrStmt {
+    pub fn raw(&self) -> &*mut lang::ThreadLocalPtrStmt {
         &self.inner
     }
 }
@@ -943,7 +943,7 @@ impl BlockLocalPtrStmt {
     pub fn new(inner: *mut lang::BlockLocalPtrStmt) -> Self {
         BlockLocalPtrStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::BlockLocalPtrStmt {
+    pub fn raw(&self) -> &*mut lang::BlockLocalPtrStmt {
         &self.inner
     }
 }
@@ -962,7 +962,7 @@ impl ClearListStmt {
     pub fn new(inner: *mut lang::ClearListStmt) -> Self {
         ClearListStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::ClearListStmt {
+    pub fn raw(&self) -> &*mut lang::ClearListStmt {
         &self.inner
     }
 }
@@ -981,7 +981,7 @@ impl InternalFuncStmt {
     pub fn new(inner: *mut lang::InternalFuncStmt) -> Self {
         InternalFuncStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::InternalFuncStmt {
+    pub fn raw(&self) -> &*mut lang::InternalFuncStmt {
         &self.inner
     }
 }
@@ -1000,7 +1000,7 @@ impl TexturePtrStmt {
     pub fn new(inner: *mut lang::TexturePtrStmt) -> Self {
         TexturePtrStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::TexturePtrStmt {
+    pub fn raw(&self) -> &*mut lang::TexturePtrStmt {
         &self.inner
     }
 }
@@ -1019,7 +1019,7 @@ impl TextureOpStmt {
     pub fn new(inner: *mut lang::TextureOpStmt) -> Self {
         TextureOpStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::TextureOpStmt {
+    pub fn raw(&self) -> &*mut lang::TextureOpStmt {
         &self.inner
     }
 }
@@ -1038,7 +1038,7 @@ impl AdStackAllocaStmt {
     pub fn new(inner: *mut lang::AdStackAllocaStmt) -> Self {
         AdStackAllocaStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::AdStackAllocaStmt {
+    pub fn raw(&self) -> &*mut lang::AdStackAllocaStmt {
         &self.inner
     }
 }
@@ -1057,7 +1057,7 @@ impl AdStackLoadTopStmt {
     pub fn new(inner: *mut lang::AdStackLoadTopStmt) -> Self {
         AdStackLoadTopStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::AdStackLoadTopStmt {
+    pub fn raw(&self) -> &*mut lang::AdStackLoadTopStmt {
         &self.inner
     }
 }
@@ -1076,7 +1076,7 @@ impl AdStackLoadTopAdjStmt {
     pub fn new(inner: *mut lang::AdStackLoadTopAdjStmt) -> Self {
         AdStackLoadTopAdjStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::AdStackLoadTopAdjStmt {
+    pub fn raw(&self) -> &*mut lang::AdStackLoadTopAdjStmt {
         &self.inner
     }
 }
@@ -1095,7 +1095,7 @@ impl AdStackPopStmt {
     pub fn new(inner: *mut lang::AdStackPopStmt) -> Self {
         AdStackPopStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::AdStackPopStmt {
+    pub fn raw(&self) -> &*mut lang::AdStackPopStmt {
         &self.inner
     }
 }
@@ -1114,7 +1114,7 @@ impl AdStackPushStmt {
     pub fn new(inner: *mut lang::AdStackPushStmt) -> Self {
         AdStackPushStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::AdStackPushStmt {
+    pub fn raw(&self) -> &*mut lang::AdStackPushStmt {
         &self.inner
     }
 }
@@ -1133,7 +1133,7 @@ impl AdStackAccAdjointStmt {
     pub fn new(inner: *mut lang::AdStackAccAdjointStmt) -> Self {
         AdStackAccAdjointStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::AdStackAccAdjointStmt {
+    pub fn raw(&self) -> &*mut lang::AdStackAccAdjointStmt {
         &self.inner
     }
 }
@@ -1152,7 +1152,7 @@ impl BitStructStoreStmt {
     pub fn new(inner: *mut lang::BitStructStoreStmt) -> Self {
         BitStructStoreStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::BitStructStoreStmt {
+    pub fn raw(&self) -> &*mut lang::BitStructStoreStmt {
         &self.inner
     }
 }
@@ -1171,7 +1171,7 @@ impl MeshRelationAccessStmt {
     pub fn new(inner: *mut lang::MeshRelationAccessStmt) -> Self {
         MeshRelationAccessStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::MeshRelationAccessStmt {
+    pub fn raw(&self) -> &*mut lang::MeshRelationAccessStmt {
         &self.inner
     }
 }
@@ -1190,7 +1190,7 @@ impl MeshIndexConversionStmt {
     pub fn new(inner: *mut lang::MeshIndexConversionStmt) -> Self {
         MeshIndexConversionStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::MeshIndexConversionStmt {
+    pub fn raw(&self) -> &*mut lang::MeshIndexConversionStmt {
         &self.inner
     }
 }
@@ -1209,7 +1209,7 @@ impl MeshPatchIndexStmt {
     pub fn new(inner: *mut lang::MeshPatchIndexStmt) -> Self {
         MeshPatchIndexStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::MeshPatchIndexStmt {
+    pub fn raw(&self) -> &*mut lang::MeshPatchIndexStmt {
         &self.inner
     }
 }
@@ -1228,7 +1228,7 @@ impl MatrixInitStmt {
     pub fn new(inner: *mut lang::MatrixInitStmt) -> Self {
         MatrixInitStmt { inner }
     }
-    pub fn into_raw(&self) -> &*mut lang::MatrixInitStmt {
+    pub fn raw(&self) -> &*mut lang::MatrixInitStmt {
         &self.inner
     }
 }

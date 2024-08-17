@@ -1,10 +1,9 @@
 use autocxx::{c_int, WithinUniquePtr};
 use chirp_sys::taichi::lang;
-use cxx::UniquePtr;
 use std::ptr::null_mut;
 
 pub struct SNode {
-    inner: UniquePtr<lang::SNode>,
+    inner: *mut lang::SNode,
 }
 
 pub enum SNodeType {
@@ -40,12 +39,14 @@ impl SNodeType {
 impl SNode {
     pub fn new(depth: i32, ty: SNodeType) -> Self {
         let inner = unsafe {
-            lang::SNode::new1(c_int(depth), ty.to_sys(), null_mut(), null_mut()).within_unique_ptr()
+            lang::SNode::new1(c_int(depth), ty.to_sys(), null_mut(), null_mut())
+                .within_unique_ptr()
+                .into_raw()
         };
         SNode { inner }
     }
 
-    pub fn into_inner(self) -> UniquePtr<lang::SNode> {
-        self.inner
+    pub fn raw(&mut self) -> &*mut lang::SNode {
+        &self.inner
     }
 }

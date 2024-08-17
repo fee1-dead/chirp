@@ -11,6 +11,8 @@ autocxx::include_cpp! {
     #include "taichi/program/kernel.h"
     #include "taichi/program/callable.h"
     #include "taichi/ir/statements.h"
+
+    #include "taichi/ir/mesh.h"
     name!(ffi)
     safety!(unsafe_ffi)
     generate!("taichi::lang::AotModuleBuilder")
@@ -76,6 +78,7 @@ autocxx::include_cpp! {
 
     generate!("taichi::lang::MatrixInitStmt")
 
+    generate_ns!("taichi::lang::mesh")
 
     block!("taichi::lang::aot::Kernel")
     // generate!("taichi::lang::new_kernel")

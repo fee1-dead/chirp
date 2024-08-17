@@ -1,8 +1,9 @@
-use crate::ir::snodes::SNode;
+use crate::ir::snode::SNode;
 use crate::AotModuleBuilder;
 use crate::{Arch, CVec};
 use autocxx::WithinBox;
 use chirp_sys::taichi::lang;
+use cxx::UniquePtr;
 use std::pin::Pin;
 
 pub struct Program {
@@ -15,8 +16,9 @@ impl Program {
         Program { inner }
     }
 
-    pub fn add_snode_tree(&mut self, root: SNode, compile_only: bool) -> *mut lang::SNodeTree {
-        self.pin().add_snode_tree(root.into_inner(), compile_only)
+    pub fn add_snode_tree(&mut self, root: &mut SNode, compile_only: bool) -> *mut lang::SNodeTree {
+        self.pin()
+            .add_snode_tree(unsafe { UniquePtr::from_raw(*root.raw()) }, compile_only)
     }
 
     pub fn make_aot_module_builder(&mut self, arch: Arch, caps: &CVec) -> AotModuleBuilder {
