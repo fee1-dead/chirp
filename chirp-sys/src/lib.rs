@@ -6,7 +6,7 @@ autocxx::include_cpp! {
     #include "taichi/ir/ir_builder.h"
     #include "taichi/ir/type.h"
     #include "taichi/ir/snode.h"
-    // #include "taichi/ir/shim.h"
+    #include "taichi/ir/shim.h"
     #include "taichi/program/program.h"
     #include "taichi/program/kernel.h"
     #include "taichi/program/callable.h"
@@ -17,6 +17,8 @@ autocxx::include_cpp! {
     safety!(unsafe_ffi)
     generate!("taichi::lang::AotModuleBuilder")
     generate!("taichi::lang::IRBuilder")
+    generate!("taichi::lang::IRBuilder_LoopGuard")
+    // extern_cpp_opaque_type!("taichi::lang::IRBuilder_LoopGuard", bridge::LoopGuard)
     generate!("taichi::lang::IRNode")
     generate!("taichi::lang::PrimitiveType")
     generate!("taichi::lang::Program")
@@ -79,17 +81,20 @@ autocxx::include_cpp! {
     generate!("taichi::lang::MatrixInitStmt")
 
     generate_ns!("taichi::lang::mesh")
+    generate_ns!("taichi::lang::chirp")
 
     block!("taichi::lang::aot::Kernel")
     // generate!("taichi::lang::new_kernel")
 }
 pub use ffi::*;
 
-/*#[cxx::bridge(namespace = "taichi::lang")]
-pub mod ffi2 {
-    unsafe extern "C++" {
-        include!("taichi/program/kernel.h");
-        type Kernel;
-    }
-}
-*/
+// #[cxx::bridge(namespace = "taichi::lang")]
+// pub mod bridge {
+//     unsafe extern "C++" {
+//         include!("taichi/ir/shim.h");
+//         type Stmt = crate::taichi::lang::Stmt;
+//         pub type LoopGuard;
+//         pub unsafe fn get_loop_guard(stmt: *mut Stmt) -> UniquePtr<LoopGuard>;
+//     }
+// }
+// pub use bridge::*;

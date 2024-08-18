@@ -29,7 +29,7 @@ def ez_gen():
                 ty_name = param.type.typename.segments[0].name
                 match ty_name:
                     case 'Stmt':
-                        params.append(f" mut {param.name}: impl {ty_name}")
+                        params.append(f"{param.name}: &mut impl {ty_name}")
                         params_c.append(f" {param.name}.cast()")
 
                     case 'DataType':
@@ -40,7 +40,7 @@ def ez_gen():
                 ty_name = param.type.ptr_to.typename.segments[0].name
                 match ty_name:
                     case 'Stmt':
-                        params.append(f" mut {param.name}: impl {ty_name}")
+                        params.append(f"{param.name}: &mut impl {ty_name}")
                         params_c.append(f" {param.name}.cast()")
 
                     case 'DataType':
@@ -68,4 +68,5 @@ def kk_gen():
                 
         
 if __name__ == "__main__":
-    kk_gen()
+    # kk_gen()
+    ez_gen()

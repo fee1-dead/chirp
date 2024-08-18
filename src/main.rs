@@ -44,10 +44,10 @@ fn main() {
     {
         let mut builder = IRBuilder::new();
         let sum = builder.create_local_var(DataType::from(PrimTy::F32));
-        let value = builder.get_float32(0.2);
-        builder.create_local_store(&sum, value);
-        let loaded = builder.create_local_load(&sum);
-        builder.create_return(loaded);
+        let mut value = builder.get_float32(0.2);
+        builder.create_local_store(&sum, &mut value);
+        let mut loaded = builder.create_local_load(&sum);
+        builder.create_return(&mut loaded);
 
         kernel_simple_ret =
             Kernel::from_ir(&mut prog, builder.extract_ir(), ident1, AutodiffMode::KNone);
@@ -59,8 +59,12 @@ fn main() {
         let mut builder = IRBuilder::new();
         let zero = builder.get_int32(0);
         let n_stmt = builder.get_int32(10);
-        let looop = builder.create_range_for(zero, n_stmt, true, 1, 0, false);
-        {}
+        let mut looop = builder.create_range_for(zero, n_stmt, true, 1, 0, false);
+        {
+            let lp = builder.get_loop_guard(&mut looop);
+            let index = builder.get_loop_index(&mut looop, 0);
+            // let ptr = builder.create_global_ptr(&mut snode);
+        }
     }
     /*
     // cxx::let_cxx_string!(ident = "foo");

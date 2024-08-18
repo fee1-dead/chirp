@@ -3,7 +3,6 @@ use super::Mesh;
 use super::SNode;
 use crate::types;
 use crate::Block;
-use crate::CVec;
 use autocxx::c_int;
 use autocxx::WithinBox;
 use chirp_sys::taichi::lang;
@@ -24,6 +23,20 @@ impl IfGuard {
 
     pub fn pin(&mut self) -> Pin<&mut lang::IRBuilder_IfGuard> {
         self.inner.as_mut()
+    }
+}
+
+pub struct LoopGuard {
+    inner: *mut lang::IRBuilder_LoopGuard,
+}
+
+impl LoopGuard {
+    pub fn new(inner: *mut lang::IRBuilder_LoopGuard) -> Self {
+        LoopGuard { inner }
+    }
+
+    pub fn raw(&mut self) -> *mut lang::IRBuilder_LoopGuard {
+        self.inner
     }
 }
 
@@ -57,6 +70,10 @@ impl IRBuilder {
             self.pin()
                 .set_insertion_point_to_false_branch(*if_stmt.raw())
         }
+    }
+
+    pub fn get_loop_guard(&mut self, looop: &mut impl Stmt) -> LoopGuard {
+        unsafe { LoopGuard::new(lang::chirp::get_loop_guard(self.pin(), looop.cast()).into_raw()) }
     }
 
     pub fn get_if_guard(&mut self, if_stmt: &IfStmt, true_branch: bool) -> IfGuard {
@@ -107,10 +124,7 @@ impl IRBuilder {
         }
     }
 
-    pub fn create_mesh_for(
-        &mut self,
-        mesh: Mesh,
-    ) -> MeshForStmt {
+    pub fn create_mesh_for(&mut self, mesh: Mesh) -> MeshForStmt {
         todo!()
     }
 
@@ -135,7 +149,7 @@ impl IRBuilder {
         todo!()
     }
 
-    pub fn get_loop_index(&mut self, mut looop: impl Stmt, index: i32) -> LoopIndexStmt {
+    pub fn get_loop_index(&mut self, looop: &mut impl Stmt, index: i32) -> LoopIndexStmt {
         LoopIndexStmt::new(unsafe { self.pin().get_loop_index(looop.cast(), c_int(index)) })
     }
 
@@ -163,27 +177,37 @@ impl IRBuilder {
         ConstStmt::new(self.pin().get_float64(value))
     }
 
+    // pub fn get_constant()
+
     pub fn create_local_var(&mut self, dt: types::DataType) -> AllocaStmt {
         AllocaStmt::new(self.pin().create_local_var(dt.uni_ptr()))
     }
 
-    pub fn create_local_store(&mut self, ptr: &AllocaStmt, mut data: impl Stmt) {
+    pub fn create_local_store(&mut self, ptr: &AllocaStmt, data: &mut impl Stmt) {
         unsafe {
             self.pin().create_local_store(*ptr.raw(), data.cast());
         }
     }
 
+    pub fn create_global_ptr(&mut self) -> GlobalPtrStmt {
+        // unsafe {
+        //     GlobalPtrStmt::new(
+        //         lang::chirp::create_global_ptr()
+        //     )
+        // }
+        todo!()
+    }
     pub fn create_local_load(&mut self, ptr: &AllocaStmt) -> LocalLoadStmt {
         unsafe { LocalLoadStmt::new(self.pin().create_local_load(*ptr.raw())) }
     }
 
-    pub fn create_return(&mut self, mut value: impl Stmt) -> ReturnStmt {
+    pub fn create_return(&mut self, value: &mut impl Stmt) -> ReturnStmt {
         unsafe { ReturnStmt::new(self.pin().create_return(value.cast())) }
     }
 
     pub fn create_cast(
         &mut self,
-        mut value: impl Stmt,
+        value: &mut impl Stmt,
         output_type: types::DataType,
     ) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_cast(value.cast(), output_type.uni_ptr())) }
@@ -191,7 +215,7 @@ impl IRBuilder {
 
     pub fn create_bit_cast(
         &mut self,
-        mut value: impl Stmt,
+        value: &mut impl Stmt,
         output_type: types::DataType,
     ) -> UnaryOpStmt {
         unsafe {
@@ -202,223 +226,223 @@ impl IRBuilder {
         }
     }
 
-    pub fn create_neg(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_neg(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_neg(value.cast())) }
     }
 
-    pub fn create_not(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_not(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_not(value.cast())) }
     }
 
-    pub fn create_logical_not(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_logical_not(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_logical_not(value.cast())) }
     }
 
-    pub fn create_round(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_round(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_round(value.cast())) }
     }
 
-    pub fn create_floor(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_floor(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_floor(value.cast())) }
     }
 
-    pub fn create_ceil(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_ceil(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_ceil(value.cast())) }
     }
 
-    pub fn create_abs(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_abs(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_abs(value.cast())) }
     }
 
-    pub fn create_sgn(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_sgn(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_sgn(value.cast())) }
     }
 
-    pub fn create_sqrt(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_sqrt(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_sqrt(value.cast())) }
     }
 
-    pub fn create_rsqrt(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_rsqrt(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_rsqrt(value.cast())) }
     }
 
-    pub fn create_sin(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_sin(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_sin(value.cast())) }
     }
 
-    pub fn create_asin(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_asin(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_asin(value.cast())) }
     }
 
-    pub fn create_cos(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_cos(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_cos(value.cast())) }
     }
 
-    pub fn create_acos(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_acos(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_acos(value.cast())) }
     }
 
-    pub fn create_tan(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_tan(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_tan(value.cast())) }
     }
 
-    pub fn create_tanh(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_tanh(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_tanh(value.cast())) }
     }
 
-    pub fn create_exp(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_exp(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_exp(value.cast())) }
     }
 
-    pub fn create_log(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_log(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_log(value.cast())) }
     }
 
-    pub fn create_popcnt(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_popcnt(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_popcnt(value.cast())) }
     }
 
-    pub fn create_clz(&mut self, mut value: impl Stmt) -> UnaryOpStmt {
+    pub fn create_clz(&mut self, value: &mut impl Stmt) -> UnaryOpStmt {
         unsafe { UnaryOpStmt::new(self.pin().create_clz(value.cast())) }
     }
 
-    pub fn create_add(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_add(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_add(l.cast(), r.cast())) }
     }
 
-    pub fn create_sub(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_sub(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_sub(l.cast(), r.cast())) }
     }
 
-    pub fn create_mul(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_mul(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_mul(l.cast(), r.cast())) }
     }
 
-    pub fn create_div(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_div(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_div(l.cast(), r.cast())) }
     }
 
-    pub fn create_floordiv(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_floordiv(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_floordiv(l.cast(), r.cast())) }
     }
 
-    pub fn create_truediv(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_truediv(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_truediv(l.cast(), r.cast())) }
     }
 
-    pub fn create_mod(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_mod(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_mod(l.cast(), r.cast())) }
     }
 
-    pub fn create_max(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_max(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_max(l.cast(), r.cast())) }
     }
 
-    pub fn create_min(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_min(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_min(l.cast(), r.cast())) }
     }
 
-    pub fn create_atan2(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_atan2(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_atan2(l.cast(), r.cast())) }
     }
 
-    pub fn create_pow(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_pow(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_pow(l.cast(), r.cast())) }
     }
 
-    pub fn create_and(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_and(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_and(l.cast(), r.cast())) }
     }
 
-    pub fn create_or(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_or(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_or(l.cast(), r.cast())) }
     }
 
-    pub fn create_xor(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_xor(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_xor(l.cast(), r.cast())) }
     }
 
-    pub fn create_shl(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_shl(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_shl(l.cast(), r.cast())) }
     }
 
-    pub fn create_shr(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_shr(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_shr(l.cast(), r.cast())) }
     }
 
-    pub fn create_sar(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_sar(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_sar(l.cast(), r.cast())) }
     }
 
-    pub fn create_cmp_lt(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_cmp_lt(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_cmp_lt(l.cast(), r.cast())) }
     }
 
-    pub fn create_cmp_le(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_cmp_le(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_cmp_le(l.cast(), r.cast())) }
     }
 
-    pub fn create_cmp_gt(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_cmp_gt(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_cmp_gt(l.cast(), r.cast())) }
     }
 
-    pub fn create_cmp_ge(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_cmp_ge(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_cmp_ge(l.cast(), r.cast())) }
     }
 
-    pub fn create_cmp_eq(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_cmp_eq(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_cmp_eq(l.cast(), r.cast())) }
     }
 
-    pub fn create_cmp_ne(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_cmp_ne(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_cmp_ne(l.cast(), r.cast())) }
     }
 
-    pub fn create_logical_or(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_logical_or(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_logical_or(l.cast(), r.cast())) }
     }
 
-    pub fn create_logical_and(&mut self, mut l: impl Stmt, mut r: impl Stmt) -> BinaryOpStmt {
+    pub fn create_logical_and(&mut self, l: &mut impl Stmt, r: &mut impl Stmt) -> BinaryOpStmt {
         unsafe { BinaryOpStmt::new(self.pin().create_logical_and(l.cast(), r.cast())) }
     }
 
-    pub fn create_atomic_add(&mut self, mut dest: impl Stmt, mut val: impl Stmt) -> AtomicOpStmt {
+    pub fn create_atomic_add(&mut self, dest: &mut impl Stmt, val: &mut impl Stmt) -> AtomicOpStmt {
         unsafe { AtomicOpStmt::new(self.pin().create_atomic_add(dest.cast(), val.cast())) }
     }
 
-    pub fn create_atomic_sub(&mut self, mut dest: impl Stmt, mut val: impl Stmt) -> AtomicOpStmt {
+    pub fn create_atomic_sub(&mut self, dest: &mut impl Stmt, val: &mut impl Stmt) -> AtomicOpStmt {
         unsafe { AtomicOpStmt::new(self.pin().create_atomic_sub(dest.cast(), val.cast())) }
     }
 
-    pub fn create_atomic_max(&mut self, mut dest: impl Stmt, mut val: impl Stmt) -> AtomicOpStmt {
+    pub fn create_atomic_max(&mut self, dest: &mut impl Stmt, val: &mut impl Stmt) -> AtomicOpStmt {
         unsafe { AtomicOpStmt::new(self.pin().create_atomic_max(dest.cast(), val.cast())) }
     }
 
-    pub fn create_atomic_min(&mut self, mut dest: impl Stmt, mut val: impl Stmt) -> AtomicOpStmt {
+    pub fn create_atomic_min(&mut self, dest: &mut impl Stmt, val: &mut impl Stmt) -> AtomicOpStmt {
         unsafe { AtomicOpStmt::new(self.pin().create_atomic_min(dest.cast(), val.cast())) }
     }
 
-    pub fn create_atomic_and(&mut self, mut dest: impl Stmt, mut val: impl Stmt) -> AtomicOpStmt {
+    pub fn create_atomic_and(&mut self, dest: &mut impl Stmt, val: &mut impl Stmt) -> AtomicOpStmt {
         unsafe { AtomicOpStmt::new(self.pin().create_atomic_and(dest.cast(), val.cast())) }
     }
 
-    pub fn create_atomic_or(&mut self, mut dest: impl Stmt, mut val: impl Stmt) -> AtomicOpStmt {
+    pub fn create_atomic_or(&mut self, dest: &mut impl Stmt, val: &mut impl Stmt) -> AtomicOpStmt {
         unsafe { AtomicOpStmt::new(self.pin().create_atomic_or(dest.cast(), val.cast())) }
     }
 
-    pub fn create_atomic_xor(&mut self, mut dest: impl Stmt, mut val: impl Stmt) -> AtomicOpStmt {
+    pub fn create_atomic_xor(&mut self, dest: &mut impl Stmt, val: &mut impl Stmt) -> AtomicOpStmt {
         unsafe { AtomicOpStmt::new(self.pin().create_atomic_xor(dest.cast(), val.cast())) }
     }
 
-    pub fn create_atomic_mul(&mut self, mut dest: impl Stmt, mut val: impl Stmt) -> AtomicOpStmt {
+    pub fn create_atomic_mul(&mut self, dest: &mut impl Stmt, val: &mut impl Stmt) -> AtomicOpStmt {
         unsafe { AtomicOpStmt::new(self.pin().create_atomic_mul(dest.cast(), val.cast())) }
     }
 
     pub fn create_select(
         &mut self,
-        mut cond: impl Stmt,
-        mut true_result: impl Stmt,
-        mut false_result: impl Stmt,
+        cond: &mut impl Stmt,
+        true_result: &mut impl Stmt,
+        false_result: &mut impl Stmt,
     ) -> TernaryOpStmt {
         unsafe {
             TernaryOpStmt::new(self.pin().create_select(
@@ -429,69 +453,46 @@ impl IRBuilder {
         }
     }
 
-    pub fn create_global_ptr(
-        &mut self,
-        snode: &mut SNode
-    ) -> GlobalPtrStmt {
-        todo!()
+    pub fn create_ad_stack(&mut self, dt: types::DataType, max_size: usize) -> AdStackAllocaStmt {
+        AdStackAllocaStmt::new(self.pin().create_ad_stack(&dt.uni_ptr(), max_size))
     }
 
-    pub fn create_ad_stack(
-        &mut self,
-        dt: types::DataType,
-        max_size: usize
-    ) -> AdStackAllocaStmt {
-        
-        AdStackAllocaStmt::new(
-                self.pin().create_ad_stack(&dt.uni_ptr(), max_size)
-            )
-        
-    }
-
-    pub fn ad_stack_push(
-        &mut self,
-        stack: &AdStackAllocaStmt,
-        mut val: impl Stmt
-    ) {
+    pub fn ad_stack_push(&mut self, stack: &AdStackAllocaStmt, val: &mut impl Stmt) {
         unsafe { self.pin().ad_stack_push(*stack.raw(), val.cast()) }
     }
 
     pub fn ad_stack_pop(&mut self, stack: &AdStackAllocaStmt) {
-        unsafe { self.pin().ad_stack_pop(*stack.raw())}
+        unsafe { self.pin().ad_stack_pop(*stack.raw()) }
     }
 
     pub fn ad_stack_load_top(&mut self, stack: &AdStackAllocaStmt) -> AdStackLoadTopStmt {
-        unsafe {
-            AdStackLoadTopStmt::new(self.pin().ad_stack_load_top(*stack.raw()))
-        }
+        unsafe { AdStackLoadTopStmt::new(self.pin().ad_stack_load_top(*stack.raw())) }
     }
-    
-    pub fn ad_stack_load_top_adjoint(&mut self, stack: &AdStackAllocaStmt) -> AdStackLoadTopAdjStmt {
+
+    pub fn ad_stack_load_top_adjoint(
+        &mut self,
+        stack: &AdStackAllocaStmt,
+    ) -> AdStackLoadTopAdjStmt {
+        unsafe { AdStackLoadTopAdjStmt::new(self.pin().ad_stack_load_top_adjoint(*stack.raw())) }
+    }
+
+    pub fn ad_stack_accumulate_adjoint(&mut self, stack: &AdStackAllocaStmt, val: &mut impl Stmt) {
         unsafe {
-            AdStackLoadTopAdjStmt::new(
-                self.pin().ad_stack_load_top_adjoint(*stack.raw())
-            )
+            self.pin()
+                .ad_stack_accumulate_adjoint(*stack.raw(), val.cast())
         }
     }
 
-    pub fn ad_stack_accumulate_adjoint(&mut self, stack: &AdStackAllocaStmt, mut val: impl Stmt) {
-        unsafe {
-            self.pin().ad_stack_accumulate_adjoint(*stack.raw(), val.cast())
-        }
-    }
-
-    // pub fn get_relation_size(&mut self, mesh: &Mesh, mut mesh_idx: impl Stmt, to_type: MeshElementType) -> MeshRelationAccessStmt {
+    // pub fn get_relation_size(&mut self, mesh: &Mesh, mesh_idx: &mut impl Stmt, to_type: MeshElementType) -> MeshRelationAccessStmt {
     //     todo!()
     // }
 
-    // pub fn get_relation_size(&mut self, mesh: &Mesh, mut mesh_idx: impl Stmt, to_type: MeshElementType, mut neighbor_idx: impl Stmt) -> MeshRelationAccessStmt {
+    // pub fn get_relation_size(&mut self, mesh: &Mesh, mesh_idx: &mut impl Stmt, to_type: MeshElementType, mut neighbor_idx: impl Stmt) -> MeshRelationAccessStmt {
     //     todo!()
     // }
 
     pub fn get_patch_index(&mut self) -> MeshPatchIndexStmt {
-        
-            MeshPatchIndexStmt::new(self.pin().get_patch_index())
-        
+        MeshPatchIndexStmt::new(self.pin().get_patch_index())
     }
 
     pub fn pin(&mut self) -> Pin<&mut lang::IRBuilder> {
