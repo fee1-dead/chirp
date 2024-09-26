@@ -45,7 +45,7 @@ fn main() {
     args.remove(0);
 
     let using_internal_features =
-    rustc_driver::install_ice_hook("https://github.com/fee1-dead/chirp/issues/new", |_| ());
+        rustc_driver::install_ice_hook("https://github.com/fee1-dead/chirp/issues/new", |_| ());
 
     rustc_driver::install_ctrlc_handler();
     rustc_driver::catch_with_exit_code(move || {
